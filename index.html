@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MC 百科全书 · 从选版本开始</title>
+<meta name="description" content="Minecraft 百科全书：先选 Java 版还是基岩版，再按分类浏览生物、方块、物品、附魔、维度、结构、红石与进度。">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%235d9c3c'/%3E%3Crect x='6' y='6' width='20' height='20' rx='3' fill='%237ec25a'/%3E%3Crect x='10' y='10' width='5' height='5' fill='%233f6e29'/%3E%3Crect x='18' y='16' width='5' height='5' fill='%233f6e29'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- ==================== 第一屏：版本选择 ==================== -->
+<div id="gate" class="gate">
+  <div class="gate__bg"></div>
+  <div class="gate__inner">
+    <div class="gate__logo">
+      <span class="pixel-block"></span>
+      <span class="pixel-block"></span>
+      <span class="pixel-block"></span>
+    </div>
+    <h1 class="gate__title">MC 百科全书</h1>
+    <p class="gate__sub">先选一个版本 · 内容会按版本过滤</p>
+
+    <div class="gate__cards">
+      <button class="vcard" data-edition="java">
+        <span class="vcard__badge">Java</span>
+        <span class="vcard__icon">⛏️</span>
+        <span class="vcard__name">Java 版</span>
+        <span class="vcard__en">Minecraft: Java Edition</span>
+        <span class="vcard__desc">
+          原版 · PC 平台。有<strong>进度</strong>系统、红石<strong>准连接性</strong>、
+          攻击冷却、模组生态最丰富。
+        </span>
+        <span class="vcard__go">进入 Java 版 →</span>
+      </button>
+
+      <button class="vcard vcard--bedrock" data-edition="bedrock">
+        <span class="vcard__badge">Bedrock</span>
+        <span class="vcard__icon">🪨</span>
+        <span class="vcard__name">基岩版</span>
+        <span class="vcard__en">Minecraft: Bedrock Edition</span>
+        <span class="vcard__desc">
+          手机 · 主机 · Win10。使用<strong>成就</strong>系统、
+          可用桶<strong>装鱼</strong>、跨平台联机、红石机制略有不同。
+        </span>
+        <span class="vcard__go">进入基岩版 →</span>
+      </button>
+    </div>
+
+    <p class="gate__hint">
+      选错了没关系，进去后随时可在右上角切换版本。
+    </p>
+  </div>
+</div>
+
+<!-- ==================== 第二屏：百科主体 ==================== -->
+<div id="app" class="app" hidden>
+
+  <!-- 顶栏 -->
+  <header class="topbar">
+    <button class="topbar__menu" id="menuBtn" aria-label="展开分类">☰</button>
+    <a class="topbar__brand" href="#" onclick="App.goHome();return false;">
+      <span class="topbar__cube"></span>
+      <span>MC 百科全书</span>
+    </a>
+
+    <div class="search">
+      <span class="search__ico">🔍</span>
+      <input id="search" type="search" placeholder="搜索条目 / 标签…" autocomplete="off">
+      <button class="search__clear" id="searchClear" hidden>✕</button>
+      <div class="search__pop" id="searchPop" hidden></div>
+    </div>
+
+    <div class="topbar__right">
+      <button class="edition-pill" id="editionPill" title="切换版本">
+        <span id="editionPillName">Java 版</span>
+      </button>
+      <button class="icon-btn" id="randBtn" title="随机条目">🎲</button>
+      <button class="icon-btn" id="themeBtn" title="切换主题">🌙</button>
+    </div>
+  </header>
+
+  <div class="layout">
+    <!-- 侧栏 -->
+    <aside class="sidebar" id="sidebar">
+      <nav class="sidebar__nav" id="catNav"></nav>
+      <div class="sidebar__foot">
+        <div class="sidebar__stat"><span id="statCount">0</span> 个条目</div>
+        <div class="sidebar__stat muted">数据随版本切换更新</div>
+      </div>
+    </aside>
+    <div class="scrim" id="scrim" hidden></div>
+
+    <!-- 内容区 -->
+    <main class="main" id="main">
+      <div class="crumbs" id="crumbs"></div>
+      <div id="view"></div>
+    </main>
+  </div>
+
+  <!-- 版本浮层 -->
+  <div class="popover" id="editionPop" hidden>
+    <div class="popover__title">切换版本</div>
+    <button class="popover__item" data-edition="java">Java 版</button>
+    <button class="popover__item" data-edition="bedrock">基岩版</button>
+    <div class="popover__note">切换后，仅存在于另一版本的条目会被隐藏。</div>
+  </div>
+</div>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
