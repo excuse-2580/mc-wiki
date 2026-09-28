@@ -17,12 +17,14 @@
   --java: #e07a2f;
   --bedrock: #3aa8c1;
 
-  /* 暗色（默认） */
-  --bg: #14161a;
-  --bg-2: #191c22;
-  --panel: #1e222a;
-  --panel-2: #262b34;
-  --line: #333a45;
+  /* 暗色（默认）
+     关键：--bg 与 --panel 必须拉开层次，否则卡片和背景糊成一片，
+     整页看起来就是"一大块暗区"。这里背景压深、面板提亮。 */
+  --bg: #0e1015;
+  --bg-2: #141821;
+  --panel: #232833;
+  --panel-2: #2e3440;
+  --line: #3c4453;
   --tx: #e8eaed;
   --tx-2: #a3abb8;
   --tx-3: #6f7887;
@@ -35,14 +37,14 @@
 }
 
 html[data-theme="light"] {
-  --bg: #f2f4f7;
-  --bg-2: #e9ecf1;
+  --bg: #eef1f6;
+  --bg-2: #e4e8ef;
   --panel: #ffffff;
-  --panel-2: #f4f6f9;
-  --line: #dfe3ea;
-  --tx: #1a1d23;
-  --tx-2: #5a6372;
-  --tx-3: #8b93a1;
+  --panel-2: #f5f7fa;
+  --line: #d8dee8;
+  --tx: #14171d;
+  --tx-2: #4d5665;
+  --tx-3: #7c8493;
   --shadow: 0 6px 20px rgba(20,30,50,.12);
 }
 
@@ -315,7 +317,8 @@ a:hover { text-decoration: underline; }
 .card__ico {
   width: 38px; height: 38px; flex: none; border-radius: 9px;
   display: grid; place-items: center; font-size: 21px;
-  box-shadow: inset -2px -2px 0 rgba(0,0,0,.22);
+  border: 1px solid transparent;
+  box-shadow: inset -2px -2px 0 rgba(0,0,0,.18);
 }
 .card__nm { font-size: 14.5px; font-weight: 700; line-height: 1.25; }
 .card__en { font-size: 11px; color: var(--tx-3); }
@@ -338,20 +341,24 @@ a:hover { text-decoration: underline; }
 @media (max-width: 900px) { .infobox { position: static; } }
 .infobox__head {
   padding: 20px 18px; text-align: center;
-  background: linear-gradient(160deg, color-mix(in srgb, var(--c, var(--accent)) 34%, transparent), transparent);
+  background: linear-gradient(160deg, color-mix(in srgb, var(--c, var(--accent)) 42%, transparent), transparent 78%);
   border-bottom: 1px solid var(--line);
 }
 .infobox__ico {
   width: 74px; height: 74px; margin: 0 auto 10px; border-radius: 16px;
   display: grid; place-items: center; font-size: 40px;
-  background: color-mix(in srgb, var(--c, var(--accent)) 26%, var(--panel));
-  box-shadow: inset -3px -3px 0 rgba(0,0,0,.22);
+  /* 混合比例要够高，否则深色面板上只剩一层脏灰；
+     再加一圈同色描边，保证任何主题色都能看清边界 */
+  background: color-mix(in srgb, var(--c, var(--accent)) 48%, var(--panel));
+  border: 1px solid color-mix(in srgb, var(--c, var(--accent)) 55%, transparent);
+  box-shadow: inherit, 0 0 0 1px rgba(255,255,255,.06) inset;
 }
 .infobox__nm { font-size: 20px; font-weight: 800; }
 .infobox__en { font-size: 12px; color: var(--tx-3); }
 
 .infobox__rows { padding: 6px 0; }
-.row { display: flex; gap: 10px; padding: 8px 16px; font-size: 13px; border-bottom: 1px solid color-mix(in srgb, var(--line) 55%, transparent); }
+.row { display: flex; gap: 10px; padding: 9px 16px; font-size: 13px; border-bottom: 1px solid color-mix(in srgb, var(--line) 55%, transparent); }
+.row:nth-child(even) { background: color-mix(in srgb, var(--panel-2) 45%, transparent); }
 .row:last-child { border-bottom: none; }
 .row__k { flex: none; width: 92px; color: var(--tx-3); }
 .row__v { flex: 1; color: var(--tx); }
@@ -359,11 +366,20 @@ a:hover { text-decoration: underline; }
 
 .infobox__foot { padding: 12px 16px; border-top: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: 6px; }
 
-.article { min-width: 0; }
+.article {
+  min-width: 0;
+  /* 正文原本直接坐在 --bg 上，整块看起来发暗；
+     给一层比背景亮、比面板暗的容器，层次就出来了 */
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--r-l);
+  padding: 18px 20px 22px;
+}
 .article__lead {
-  font-size: 15.5px; color: var(--tx); background: var(--panel);
-  border: 1px solid var(--line); border-left: 3px solid var(--accent);
-  border-radius: var(--r-m); padding: 16px 18px;
+  font-size: 15.5px; color: var(--tx);
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  border-left: 3px solid var(--accent);
+  border-radius: var(--r-m); padding: 14px 18px;
 }
 .article h2 {
   font-size: 17px; font-weight: 700; margin: 24px 0 10px;

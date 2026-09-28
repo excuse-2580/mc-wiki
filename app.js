@@ -29,15 +29,16 @@ const App = {
     if (savedTh) document.documentElement.setAttribute('data-theme', savedTh);
     this.syncThemeBtn();
 
-    // 直接带 hash 进来就跳过选版本
-    const h = location.hash;
-    const m = h.match(/^#\/(java|bedrock)/);
-    if (m && savedEd) {
+    /* 直接带 hash 进来就跳过选版本。
+       注意：这里不能要求"本地存过版本"——否则别人分享
+       #/bedrock/structures/mineshaft 这类链接时，新设备会卡在选版本页。
+       链接里写了版本就按链接走，没写才弹选版本。 */
+    const m = location.hash.match(/^#\/(java|bedrock)/);
+    if (m) {
       this.edition = m[1];
+      localStorage.setItem(LS_EDITION, this.edition);
       this.enterApp();
       this.route();
-    } else {
-      // 只渲染选版本界面
     }
 
     // 版本卡片
@@ -395,7 +396,7 @@ const App = {
     }
     return `<button class="card" data-goto="${e.id}">
       <div class="card__top">
-        <div class="card__ico" style="background:color-mix(in srgb, ${e.color} 26%, var(--panel))">${e.icon}</div>
+        <div class="card__ico" style="background:color-mix(in srgb, ${e.color} 44%, var(--panel));border-color:color-mix(in srgb, ${e.color} 50%, transparent)">${e.icon}</div>
         <div>
           <div class="card__nm">${this.esc(e.name)}</div>
           <div class="card__en">${this.esc(e.en)}</div>
