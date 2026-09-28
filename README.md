@@ -63,13 +63,49 @@ python3 -m http.server 8000
 - **凋灵血量**——基岩版更高，且过半会召唤凋灵骷髅
 - **区块模拟距离**——Java 分模拟/渲染两个设置，基岩只有一个滑块
 
+## 界面：Material Design 3
+
+整套界面按 Material Design 3（Material You）规范实现。
+
+**配色**——MD3 tonal palette，由种子色生成 `primary / secondary / tertiary / surface / outline` 全套角色色，
+深浅两套主题各一份：
+
+| 版本 | 种子色 | 主色 |
+|---|---|---|
+| Java 版 | 草绿 | `#3E6B22`（亮色）/ `#A5CC7F`（暗色） |
+| 基岩版 | 青蓝 | `#00658A`（亮色）/ `#7FCCFF`（暗色） |
+
+**切版本 = 换一整套配色**，这就是 MD3 的 dynamic color——不只是换个强调色，
+`primary-container`、`secondary-container`、`surface` 等整组角色色都会跟着变。
+
+**组件**（均按 MD3 规范落地）：
+
+| 组件 | 规格 |
+|---|---|
+| Top App Bar | 高 64px，滚动后升到 elevation 2 |
+| Search bar | 全圆角 28px，48px 高，无下划线 |
+| Navigation Drawer | 桌面常驻（280px），移动端 Modal（含 scrim） |
+| Drawer item | 高 56px，全圆角，选中态 `secondary-container` |
+| Card | Filled Card，圆角 12/16px，hover 升 elevation |
+| Chip | Assist / Filter，高 24–32px，圆角 8px |
+| Button | Filled / Tonal / Text，全圆角，高 40px |
+| FAB | 56×56，圆角 16px，elevation 3 |
+| Snackbar | 圆角 4px，`inverse-surface`，自动消隐 |
+| Menu | 下拉菜单，圆角 12px，elevation 2 |
+
+**其他**：shape scale（4/8/12/16/28/full）、elevation level 0–5、
+emphasized easing、state layer（hover/focus/pressed 叠加层）、
+MD3 type scale（display / headline / title / body / label）。
+
+图标为内联 SVG（Material Symbols 风格路径）+ emoji，不依赖外链字体。
+
 ## 文件
 
 ```
 index.html   页面结构（版本选择屏 + 百科主体）
-styles.css   Minecraft 自然色系配色，深浅双主题
+styles.css   MD3 设计系统：tonal palette + shape + elevation + 全套组件
 data.js      135 个条目的数据（10 个分类）
-app.js       SPA 路由、版本过滤、搜索、随机、主题
+app.js       SPA 路由、版本过滤、搜索、随机、主题、Snackbar
 ```
 
 ## 说明

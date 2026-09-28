@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="zh-CN" data-theme="light">
+<html lang="zh-CN" data-theme="light" data-edition="java">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>MC 百科全书 · 从选版本开始</title>
 <meta name="description" content="Minecraft 百科全书：先选 Java 版还是基岩版，再按分类浏览生物、方块、物品、附魔、维度、结构、红石与进度。">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%235d9c3c'/%3E%3Crect x='6' y='6' width='20' height='20' rx='3' fill='%237ec25a'/%3E%3Crect x='10' y='10' width='5' height='5' fill='%233f6e29'/%3E%3Crect x='18' y='16' width='5' height='5' fill='%233f6e29'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%233E6B22'/%3E%3Crect x='7' y='7' width='18' height='18' rx='4' fill='%23C3E8A0'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -32,7 +32,7 @@
           原版 · PC 平台。有<strong>进度</strong>系统、红石<strong>准连接性</strong>、
           攻击冷却、模组生态最丰富。
         </span>
-        <span class="vcard__go">进入 Java 版 →</span>
+        <span class="vcard__go">进入 Java 版</span>
       </button>
 
       <button class="vcard vcard--bedrock" data-edition="bedrock">
@@ -44,45 +44,55 @@
           手机 · 主机 · Win10。使用<strong>成就</strong>系统、
           可用桶<strong>装鱼</strong>、跨平台联机、红石机制略有不同。
         </span>
-        <span class="vcard__go">进入基岩版 →</span>
+        <span class="vcard__go">进入基岩版</span>
       </button>
     </div>
 
-    <p class="gate__hint">
-      选错了没关系，进去后随时可在右上角切换版本。
-    </p>
+    <p class="gate__hint">选错了没关系，进去后随时可在右上角切换版本。</p>
   </div>
 </div>
 
 <!-- ==================== 第二屏：百科主体 ==================== -->
 <div id="app" class="app" hidden>
 
-  <!-- 顶栏 -->
-  <header class="topbar">
-    <button class="topbar__menu" id="menuBtn" aria-label="展开分类">☰</button>
+  <!-- Top App Bar -->
+  <header class="topbar" id="topbar">
+    <button class="topbar__menu" id="menuBtn" aria-label="展开分类">
+      <svg viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+    </button>
     <a class="topbar__brand" href="#" onclick="App.goHome();return false;">
       <span class="topbar__cube"></span>
       <span>MC 百科全书</span>
     </a>
 
+    <!-- Search bar -->
     <div class="search">
-      <span class="search__ico">🔍</span>
+      <span class="search__ico">
+        <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+      </span>
       <input id="search" type="search" placeholder="搜索条目 / 标签…" autocomplete="off">
-      <button class="search__clear" id="searchClear" hidden>✕</button>
+      <button class="search__clear" id="searchClear" hidden>
+        <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+      </button>
       <div class="search__pop" id="searchPop" hidden></div>
     </div>
 
     <div class="topbar__right">
       <button class="edition-pill" id="editionPill" title="切换版本">
         <span id="editionPillName">Java 版</span>
+        <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
       </button>
-      <button class="icon-btn" id="randBtn" title="随机条目">🎲</button>
-      <button class="icon-btn" id="themeBtn" title="切换主题">🌙</button>
+      <button class="icon-btn" id="themeBtn" title="切换主题">
+        <!-- 亮色主题下显示「切换到深色」= 月亮 -->
+        <svg class="ico-dark" viewBox="0 0 24 24"><path d="M12 3a9 9 0 109 9c0-.46-.04-.92-.1-1.36A5.389 5.389 0 0116.9 12.9a5.403 5.403 0 01-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/></svg>
+        <!-- 深色主题下显示「切换到亮色」= 太阳 -->
+        <svg class="ico-light" viewBox="0 0 24 24"><path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zm0 8c-1.65 0-3-1.35-3-3s1.35-3 3-3 3 1.35 3 3-1.35 3-3 3zm-1-13h2v3h-2zm0 16h2v3h-2zM4.22 5.64l1.42-1.42 2.12 2.12-1.42 1.42zm10.02 10.02l1.42-1.42 2.12 2.12-1.42 1.42zM2 11h3v2H2zm16 0h3v2h-3zM6.34 17.66l2.12-2.12 1.42 1.42-2.12 2.12zM12.12 7.8l2.12-2.12 1.42 1.42-2.12 2.12z"/></svg>
+      </button>
     </div>
   </header>
 
   <div class="layout">
-    <!-- 侧栏 -->
+    <!-- Navigation Drawer -->
     <aside class="sidebar" id="sidebar">
       <nav class="sidebar__nav" id="catNav"></nav>
       <div class="sidebar__foot">
@@ -99,7 +109,13 @@
     </main>
   </div>
 
-  <!-- 版本浮层 -->
+  <!-- FAB：随机条目 -->
+  <button class="fab" id="randBtn" title="随机条目" aria-label="随机条目">🎲</button>
+
+  <!-- Snackbar -->
+  <div class="snackbar" id="snackbar" role="status" aria-live="polite"></div>
+
+  <!-- Menu：版本切换 -->
   <div class="popover" id="editionPop" hidden>
     <div class="popover__title">切换版本</div>
     <button class="popover__item" data-edition="java">Java 版</button>

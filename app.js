@@ -48,11 +48,18 @@ const App = {
         localStorage.setItem(LS_EDITION, this.edition);
         this.enterApp();
         this.goHome();
+        this.snack(`已切换到${this.edition === 'java' ? 'Java 版' : '基岩版'}`);
       });
     });
 
     window.addEventListener('hashchange', () => this.route());
     this.bindUI();
+
+    /* Top App Bar：滚动后升到 elevation 2（MD3 on-scroll） */
+    const tb = document.getElementById('topbar');
+    window.addEventListener('scroll', () => {
+      tb.classList.toggle('scrolled', window.scrollY > 4);
+    }, { passive: true });
   },
 
   enterApp() {
@@ -112,6 +119,7 @@ const App = {
         pop.hidden = true;
         this.applyEdition();
         this.renderCats();
+        this.snack(`已切换到${this.edition === 'java' ? 'Java 版' : '基岩版'}`);
         // 当前条目若不属于新版本，退回分类/首页
         if (this.entry && !this.find(this.entry).versions.includes(this.edition)) {
           this.goHome();
@@ -135,14 +143,26 @@ const App = {
   },
 
   syncThemeBtn() {
-    const dark = document.documentElement.getAttribute('data-theme') === 'dark';
-    document.getElementById('themeBtn').textContent = dark ? '🌙' : '☀️';
+    /* 图标由 CSS 按 html[data-theme] 自动切换（.ico-dark / .ico-light），
+       这里不用再改 DOM，否则会把内联 SVG 覆盖成 emoji。 */
+  },
+
+  /* ---------- Snackbar（MD3） ---------- */
+  snackTimer: null,
+  snack(msg) {
+    const el = document.getElementById('snackbar');
+    if (!el) return;
+    el.textContent = msg;
+    el.classList.add('on');
+    clearTimeout(this.snackTimer);
+    this.snackTimer = setTimeout(() => el.classList.remove('on'), 3200);
   },
 
   applyEdition() {
     const isJava = this.edition === 'java';
-    document.documentElement.style.setProperty('--accent',
-      isJava ? 'var(--java)' : 'var(--bedrock)');
+    /* MD3 dynamic color：切版本即换一整套 tonal palette，
+       所以把 edition 写到 html 上，让 CSS 的配色分支生效 */
+    document.documentElement.setAttribute('data-edition', this.edition);
     document.getElementById('editionPillName').textContent = isJava ? 'Java 版' : '基岩版';
   },
 
